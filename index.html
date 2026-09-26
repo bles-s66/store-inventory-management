@@ -1,131 +1,417 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Склад магазина электроники</title>
-</head>
-<body>
-    <header>
-        <h1>Магазин электроники</h1>
+    <meta name="description" content="Система учета товаров магазина электроники">
+    <title>Магазин — учет товаров</title>
 
-        <nav aria-label="Основная навигация">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="container header-inner">
+
+        <a class="logo" href="#storage">
+            МАГАЗИН
+        </a>
+
+        <nav class="main-nav" aria-label="Основная навигация">
             <a href="#storage">Склад</a>
             <a href="#purchases">Закупки</a>
             <a href="#sales">Продажи</a>
         </nav>
-    </header>
 
-    <main>
-        <section id="storage">
-            <h2>Склад товаров</h2>
+    </div>
+</header>
 
-            <form action="#" method="get">
-                <label for="search">Поиск товара</label>
-                <input
-                    type="search"
-                    id="search"
-                    name="search"
-                    placeholder="Название или категория"
-                >
-                <button type="submit">Найти</button>
+
+<main>
+
+    <!-- СКЛАД -->
+    <section id="storage" class="section">
+        <div class="container">
+
+            <div class="section-header">
+                <div>
+                    <p class="section-label">Учет товаров</p>
+                    <h1>Склад товаров</h1>
+                    <p class="section-description">
+                        Каталог товаров и информация об их наличии.
+                    </p>
+                </div>
+            </div>
+
+
+            <!-- Поиск -->
+            <form class="search-form" action="#" method="get">
+
+                <label for="product-search">
+                    Поиск товара
+                </label>
+
+                <div class="search-row">
+
+                    <input
+                        type="search"
+                        id="product-search"
+                        name="search"
+                        placeholder="Поиск по названию, категории..."
+                    >
+
+                    <button type="submit">
+                        Найти
+                    </button>
+
+                </div>
+
             </form>
 
-            <h3>Товары на складе</h3>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Название</th>
-                        <th scope="col">Категория</th>
-                        <th scope="col">Количество</th>
-                        <th scope="col">Цена</th>
-                        <th scope="col">Описание</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Ноутбук HP Pavilion</td>
-                        <td>Электроника</td>
-                        <td>1 шт.</td>
-                        <td>45 000 ₽</td>
-                        <td>Игровой ноутбук с процессором Intel Core i5</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Мышь Logitech MX Master</td>
-                        <td>Аксессуары</td>
-                        <td>11 шт.</td>
-                        <td>1 200 ₽</td>
-                        <td>Беспроводная мышь для профессионалов</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Клавиатура механическая</td>
-                        <td>Аксессуары</td>
-                        <td>6 шт.</td>
-                        <td>2 500 ₽</td>
-                        <td>Механическая клавиатура с RGB подсветкой</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Монитор 24&quot; Samsung</td>
-                        <td>Электроника</td>
-                        <td>2 шт.</td>
-                        <td>15 000 ₽</td>
-                        <td>Монитор с IPS матрицей</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Веб-камера Logitech</td>
-                        <td>Аксессуары</td>
-                        <td>10 шт.</td>
-                        <td>800 ₽</td>
-                        <td>Веб-камера Full HD для видеоконференций</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>Наушники Sony WH-1000XM4</td>
-                        <td>Аксессуары</td>
-                        <td>0 шт.</td>
-                        <td>12 000 ₽</td>
-                        <td>Беспроводные наушники с шумоподавлением</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>Жесткий диск 1TB</td>
-                        <td>Комплектующие</td>
-                        <td>2 шт.</td>
-                        <td>3 500 ₽</td>
-                        <td>Внутренний жесткий диск для ПК</td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td>Оперативная память 16GB</td>
-                        <td>Комплектующие</td>
-                        <td>10 шт.</td>
-                        <td>2 800 ₽</td>
-                        <td>Модуль оперативной памяти DDR4</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+            <!-- Товары -->
+            <div class="products">
 
-        <section id="purchases">
+                <article class="product-card" tabindex="0">
+
+                    <div class="product-image" aria-hidden="true">
+                        💻
+                    </div>
+
+                    <div class="product-content">
+
+                        <span class="product-category">
+                            Электроника
+                        </span>
+
+                        <h2>Ноутбук HP Pavilion</h2>
+
+                        <p class="product-description">
+                            Игровой ноутбук с процессором Intel Core i5
+                        </p>
+
+                        <div class="product-info">
+                            <span class="product-price">
+                                45 000 ₽
+                            </span>
+
+                            <span class="product-stock">
+                                В наличии: 1
+                            </span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product-card" tabindex="0">
+
+                    <div class="product-image" aria-hidden="true">
+                        🖱️
+                    </div>
+
+                    <div class="product-content">
+
+                        <span class="product-category">
+                            Аксессуары
+                        </span>
+
+                        <h2>Мышь Logitech MX Master</h2>
+
+                        <p class="product-description">
+                            Беспроводная мышь для профессионалов
+                        </p>
+
+                        <div class="product-info">
+                            <span class="product-price">
+                                1 200 ₽
+                            </span>
+
+                            <span class="product-stock">
+                                В наличии: 11
+                            </span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product-card" tabindex="0">
+
+                    <div class="product-image" aria-hidden="true">
+                        ⌨️
+                    </div>
+
+                    <div class="product-content">
+
+                        <span class="product-category">
+                            Аксессуары
+                        </span>
+
+                        <h2>Клавиатура механическая</h2>
+
+                        <p class="product-description">
+                            Механическая клавиатура с RGB подсветкой
+                        </p>
+
+                        <div class="product-info">
+                            <span class="product-price">
+                                2 500 ₽
+                            </span>
+
+                            <span class="product-stock">
+                                В наличии: 6
+                            </span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product-card" tabindex="0">
+
+                    <div class="product-image" aria-hidden="true">
+                        🖥️
+                    </div>
+
+                    <div class="product-content">
+
+                        <span class="product-category">
+                            Электроника
+                        </span>
+
+                        <h2>Монитор 24" Samsung</h2>
+
+                        <p class="product-description">
+                            Монитор с IPS матрицей
+                        </p>
+
+                        <div class="product-info">
+                            <span class="product-price">
+                                15 000 ₽
+                            </span>
+
+                            <span class="product-stock">
+                                В наличии: 2
+                            </span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product-card" tabindex="0">
+
+                    <div class="product-image" aria-hidden="true">
+                        📷
+                    </div>
+
+                    <div class="product-content">
+
+                        <span class="product-category">
+                            Аксессуары
+                        </span>
+
+                        <h2>Веб-камера Logitech</h2>
+
+                        <p class="product-description">
+                            Веб-камера Full HD для видеоконференций
+                        </p>
+
+                        <div class="product-info">
+                            <span class="product-price">
+                                800 ₽
+                            </span>
+
+                            <span class="product-stock">
+                                В наличии: 10
+                            </span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product-card product-card--empty" tabindex="0">
+
+                    <div class="product-image" aria-hidden="true">
+                        🎧
+                    </div>
+
+                    <div class="product-content">
+
+                        <span class="product-category">
+                            Аксессуары
+                        </span>
+
+                        <h2>Наушники Sony WH-1000XM4</h2>
+
+                        <p class="product-description">
+                            Беспроводные наушники с шумоподавлением
+                        </p>
+
+                        <div class="product-info">
+                            <span class="product-price">
+                                12 000 ₽
+                            </span>
+
+                            <span class="product-stock product-stock--empty">
+                                Нет в наличии
+                            </span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product-card" tabindex="0">
+
+                    <div class="product-image" aria-hidden="true">
+                        💾
+                    </div>
+
+                    <div class="product-content">
+
+                        <span class="product-category">
+                            Комплектующие
+                        </span>
+
+                        <h2>Жесткий диск 1TB</h2>
+
+                        <p class="product-description">
+                            Внутренний жесткий диск для ПК
+                        </p>
+
+                        <div class="product-info">
+                            <span class="product-price">
+                                3 500 ₽
+                            </span>
+
+                            <span class="product-stock">
+                                В наличии: 2
+                            </span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="product-card" tabindex="0">
+
+                    <div class="product-image" aria-hidden="true">
+                        🧠
+                    </div>
+
+                    <div class="product-content">
+
+                        <span class="product-category">
+                            Комплектующие
+                        </span>
+
+                        <h2>Оперативная память 16GB</h2>
+
+                        <p class="product-description">
+                            Модуль оперативной памяти DDR4
+                        </p>
+
+                        <div class="product-info">
+                            <span class="product-price">
+                                2 800 ₽
+                            </span>
+
+                            <span class="product-stock">
+                                В наличии: 10
+                            </span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ЗАКУПКИ -->
+    <section id="purchases" class="section section-light">
+        <div class="container">
+
+            <p class="section-label">Поступление товаров</p>
+
             <h2>Закупки</h2>
-            <p>Раздел для работы с поставщиками и пополнения склада.</p>
-        </section>
 
-        <section id="sales">
+            <p class="section-description">
+                Раздел предназначен для учета поступления товаров
+                от поставщиков.
+            </p>
+
+            <div class="info-box">
+                <span class="info-icon"></span>
+
+                <div>
+                    <h3>Учет закупок</h3>
+
+                    <p>
+                        Здесь можно будет просматривать информацию
+                        о поступивших товарах и поставщиках.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ПРОДАЖИ -->
+    <section id="sales" class="section">
+        <div class="container">
+
+            <p class="section-label">Реализация товаров</p>
+
             <h2>Продажи</h2>
-            <p>Раздел для оформления продаж товаров со склада.</p>
-        </section>
-    </main>
 
-    <footer>
-        <p>Магазин электроники — учет товаров на складе</p>
-    </footer>
+            <p class="section-description">
+                Раздел предназначен для учета проданных товаров.
+            </p>
+
+            <div class="info-box">
+                <span class="info-icon"></span>
+
+                <div>
+                    <h3>Учет продаж</h3>
+
+                    <p>
+                        Здесь можно будет просматривать информацию
+                        о продажах и количестве реализованных товаров.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+
+<footer class="site-footer">
+    <div class="container">
+
+        <p>
+            Проект по дисциплине Веб-программирование
+        </p>
+
+    </div>
+</footer>
+
 </body>
 </html>
