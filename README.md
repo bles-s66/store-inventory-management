@@ -32,4 +32,6 @@ web-project/
 │   └── main.css
 └── README.md
 ```
+## Скриншот главной страницы
 
+![Главная страница магазина](screenshots/main-page.png)
