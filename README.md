@@ -25,10 +25,11 @@
 
 ## Структура
 
+```text
 web-project/
 ├── index.html
 ├── styles/
 │   └── main.css
 └── README.md
-
+```
 
