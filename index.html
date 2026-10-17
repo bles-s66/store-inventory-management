@@ -6,7 +6,7 @@
     <meta name="description" content="Система учета товаров магазина электроники">
     <title>Магазин — учет товаров</title>
 
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
@@ -28,6 +28,7 @@
 </header>
 
 
+
 <main>
 
     <!-- склад -->
@@ -42,301 +43,60 @@
                         Каталог товаров и информация об их наличии.
                     </p>
                 </div>
+
+                <button type="button" class="btn-add" id="open-modal-btn">
+                    + Добавить товар
+                </button>
             </div>
 
 
-            <!-- поиск -->
-            <form class="search-form" action="#" method="get">
+            <!-- панель управления -->
+            <div class="controls">
 
-                <label for="product-search">
-                    Поиск товара
-                </label>
-
-                <div class="search-row">
-
+                <div class="control">
+                    <label for="search-input">Поиск товара</label>
                     <input
-                        type="search"
-                        id="product-search"
-                        name="search"
-                        placeholder="Поиск по названию, категории..."
+                        type="text"
+                        id="search-input"
+                        placeholder="Поиск по названию или описанию..."
+                        autocomplete="off"
                     >
-
-                    <button type="submit">
-                        Найти
-                    </button>
-
                 </div>
 
-            </form>
+                <div class="control">
+                    <label for="category-filter">Категория</label>
+                    <select id="category-filter">
+                        <option value="all">Все категории</option>
+                        <option value="Электроника">Электроника</option>
+                        <option value="Аксессуары">Аксессуары</option>
+                        <option value="Комплектующие">Комплектующие</option>
+                    </select>
+                </div>
+
+                <div class="control">
+                    <label for="sort-select">Сортировка</label>
+                    <select id="sort-select">
+                        <option value="name-asc">По названию (А–Я)</option>
+                        <option value="name-desc">По названию (Я–А)</option>
+                        <option value="price-asc">По цене (сначала дешёвые)</option>
+                        <option value="price-desc">По цене (сначала дорогие)</option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <!-- счётчик -->
+            <p class="results-info" id="results-info"></p>
 
 
             <!-- карточки -->
-            <div class="products">
-
-                <article class="product-card" tabindex="0">
-
-                    <div class="product-image" aria-hidden="true">
-                        💻
-                    </div>
-
-                    <div class="product-content">
-
-                        <span class="product-category">
-                            Электроника
-                        </span>
-
-                        <h2>Ноутбук HP Pavilion</h2>
-
-                        <p class="product-description">
-                            Игровой ноутбук с процессором Intel Core i5
-                        </p>
-
-                        <div class="product-info">
-                            <span class="product-price">
-                                45 000 ₽
-                            </span>
-
-                            <span class="product-stock">
-                                В наличии: 1
-                            </span>
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product-card" tabindex="0">
-
-                    <div class="product-image" aria-hidden="true">
-                        🖱️
-                    </div>
-
-                    <div class="product-content">
-
-                        <span class="product-category">
-                            Аксессуары
-                        </span>
-
-                        <h2>Мышь Logitech MX Master</h2>
-
-                        <p class="product-description">
-                            Беспроводная мышь для профессионалов
-                        </p>
-
-                        <div class="product-info">
-                            <span class="product-price">
-                                1 200 ₽
-                            </span>
-
-                            <span class="product-stock">
-                                В наличии: 11
-                            </span>
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product-card" tabindex="0">
-
-                    <div class="product-image" aria-hidden="true">
-                        ⌨️
-                    </div>
-
-                    <div class="product-content">
-
-                        <span class="product-category">
-                            Аксессуары
-                        </span>
-
-                        <h2>Клавиатура механическая</h2>
-
-                        <p class="product-description">
-                            Механическая клавиатура с RGB подсветкой
-                        </p>
-
-                        <div class="product-info">
-                            <span class="product-price">
-                                2 500 ₽
-                            </span>
-
-                            <span class="product-stock">
-                                В наличии: 6
-                            </span>
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product-card" tabindex="0">
-
-                    <div class="product-image" aria-hidden="true">
-                        🖥️
-                    </div>
-
-                    <div class="product-content">
-
-                        <span class="product-category">
-                            Электроника
-                        </span>
-
-                        <h2>Монитор 24" Samsung</h2>
-
-                        <p class="product-description">
-                            Монитор с IPS матрицей
-                        </p>
-
-                        <div class="product-info">
-                            <span class="product-price">
-                                15 000 ₽
-                            </span>
-
-                            <span class="product-stock">
-                                В наличии: 2
-                            </span>
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product-card" tabindex="0">
-
-                    <div class="product-image" aria-hidden="true">
-                        📷
-                    </div>
-
-                    <div class="product-content">
-
-                        <span class="product-category">
-                            Аксессуары
-                        </span>
-
-                        <h2>Веб-камера Logitech</h2>
-
-                        <p class="product-description">
-                            Веб-камера Full HD для видеоконференций
-                        </p>
-
-                        <div class="product-info">
-                            <span class="product-price">
-                                800 ₽
-                            </span>
-
-                            <span class="product-stock">
-                                В наличии: 10
-                            </span>
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product-card product-card--empty" tabindex="0">
-
-                    <div class="product-image" aria-hidden="true">
-                        🎧
-                    </div>
-
-                    <div class="product-content">
-
-                        <span class="product-category">
-                            Аксессуары
-                        </span>
-
-                        <h2>Наушники Sony WH-1000XM4</h2>
-
-                        <p class="product-description">
-                            Беспроводные наушники с шумоподавлением
-                        </p>
-
-                        <div class="product-info">
-                            <span class="product-price">
-                                12 000 ₽
-                            </span>
-
-                            <span class="product-stock product-stock--empty">
-                                Нет в наличии
-                            </span>
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product-card" tabindex="0">
-
-                    <div class="product-image" aria-hidden="true">
-                        💾
-                    </div>
-
-                    <div class="product-content">
-
-                        <span class="product-category">
-                            Комплектующие
-                        </span>
-
-                        <h2>Жесткий диск 1TB</h2>
-
-                        <p class="product-description">
-                            Внутренний жесткий диск для ПК
-                        </p>
-
-                        <div class="product-info">
-                            <span class="product-price">
-                                3 500 ₽
-                            </span>
-
-                            <span class="product-stock">
-                                В наличии: 2
-                            </span>
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <article class="product-card" tabindex="0">
-
-                    <div class="product-image" aria-hidden="true">
-                        🧠
-                    </div>
-
-                    <div class="product-content">
-
-                        <span class="product-category">
-                            Комплектующие
-                        </span>
-
-                        <h2>Оперативная память 16GB</h2>
-
-                        <p class="product-description">
-                            Модуль оперативной памяти DDR4
-                        </p>
-
-                        <div class="product-info">
-                            <span class="product-price">
-                                2 800 ₽
-                            </span>
-
-                            <span class="product-stock">
-                                В наличии: 10
-                            </span>
-                        </div>
-
-                    </div>
-
-                </article>
-
-            </div>
+            <div class="products" id="products-container"></div>
+
+            <!-- пустое состояние -->
+            <p class="empty-message" id="empty-message" hidden>
+                По вашему запросу ничего не найдено.
+            </p>
 
         </div>
     </section>
@@ -347,20 +107,16 @@
         <div class="container">
 
             <p class="section-label">Поступление товаров</p>
-
             <h2>Закупки</h2>
-
             <p class="section-description">
                 Раздел предназначен для учета поступления товаров
                 от поставщиков.
             </p>
 
             <div class="info-box">
-                <span class="info-icon"></span>
-
+                <span class="info-icon">📦</span>
                 <div>
                     <h3>Учет закупок</h3>
-
                     <p>
                         Здесь можно будет просматривать информацию
                         о поступивших товарах и поставщиках.
@@ -377,19 +133,15 @@
         <div class="container">
 
             <p class="section-label">Реализация товаров</p>
-
             <h2>Продажи</h2>
-
             <p class="section-description">
                 Раздел предназначен для учета проданных товаров.
             </p>
 
             <div class="info-box">
-                <span class="info-icon"></span>
-
+                <span class="info-icon">💰</span>
                 <div>
                     <h3>Учет продаж</h3>
-
                     <p>
                         Здесь можно будет просматривать информацию
                         о продажах и количестве реализованных товаров.
@@ -403,15 +155,112 @@
 </main>
 
 
-<footer class="site-footer">
-    <div class="container">
 
-        <p>
-            Проект по дисциплине Веб-программирование
-        </p>
+
+
+<!-- модальное окно -->
+<div class="modal" id="modal" hidden>
+
+    <div class="modal__backdrop" data-close></div>
+
+    <div class="modal__window" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+        <div class="modal__header">
+            <h2 id="modal-title">Добавить товар</h2>
+            <button type="button" class="modal__close" data-close aria-label="Закрыть">×</button>
+        </div>
+
+        <form class="modal__form" id="product-form" novalidate>
+
+            <div class="form-field">
+                <label for="field-name">Название *</label>
+                <input
+                    type="text"
+                    id="field-name"
+                    name="name"
+                    required
+                    minlength="3"
+                    maxlength="60"
+                    placeholder="Например, Ноутбук HP Pavilion"
+                >
+                <p class="form-error" data-error-for="field-name"></p>
+            </div>
+
+            <div class="form-field">
+                <label for="field-category">Категория *</label>
+                <select id="field-category" name="category" required>
+                    <option value="">— выберите категорию —</option>
+                    <option value="Электроника">Электроника</option>
+                    <option value="Аксессуары">Аксессуары</option>
+                    <option value="Комплектующие">Комплектующие</option>
+                </select>
+                <p class="form-error" data-error-for="field-category"></p>
+            </div>
+
+            <div class="form-field">
+                <label for="field-price">Цена, ₽ *</label>
+                <input
+                    type="number"
+                    id="field-price"
+                    name="price"
+                    required
+                    min="1"
+                    max="1000000"
+                    step="1"
+                    placeholder="45000"
+                >
+                <p class="form-error" data-error-for="field-price"></p>
+            </div>
+
+            <div class="form-field">
+                <label for="field-quantity">Количество на складе *</label>
+                <input
+                    type="number"
+                    id="field-quantity"
+                    name="quantity"
+                    required
+                    min="0"
+                    max="10000"
+                    step="1"
+                    placeholder="10"
+                >
+                <p class="form-error" data-error-for="field-quantity"></p>
+            </div>
+
+            <div class="form-field">
+                <label for="field-description">Описание</label>
+                <textarea
+                    id="field-description"
+                    name="description"
+                    maxlength="200"
+                    rows="3"
+                    placeholder="Короткое описание товара"
+                ></textarea>
+                <p class="form-error" data-error-for="field-description"></p>
+            </div>
+
+            <div class="form-field">
+                <label for="field-image">Ссылка на изображение</label>
+                <input
+                    type="url"
+                    id="field-image"
+                    name="image"
+                    placeholder="https://example.com/image.jpg"
+                >
+                <p class="form-error" data-error-for="field-image"></p>
+            </div>
+
+            <div class="modal__actions">
+                <button type="button" class="btn btn--secondary" data-close>Отмена</button>
+                <button type="submit" class="btn btn--primary">Добавить</button>
+            </div>
+
+        </form>
 
     </div>
-</footer>
+</div>
+
+<script src="js/app.js"></script>
 
 </body>
 </html>
