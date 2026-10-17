@@ -62,7 +62,7 @@ web-project/
 │       └── ram.jpg
 └── README.md
 └── README2.md
-
+```
 ## Скриншот главной страницы
 
 ![Главная страница магазина](screenshots/main-page2.png)
