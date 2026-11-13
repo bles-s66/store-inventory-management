@@ -242,17 +242,17 @@
             <div class="form-field">
                 <label for="field-image">Ссылка на изображение</label>
                 <input
-                    type="url"
+                    type="text"
                     id="field-image"
                     name="image"
-                    placeholder="https://example.com/image.jpg"
+                    placeholder="https://example.com/image.jpg или assets/images/laptop.jpg"
                 >
                 <p class="form-error" data-error-for="field-image"></p>
             </div>
 
             <div class="modal__actions">
                 <button type="button" class="btn btn--secondary" data-close>Отмена</button>
-                <button type="submit" class="btn btn--primary">Добавить</button>
+                <button type="submit" class="btn btn--primary" id="modal-submit-btn">Добавить</button>
             </div>
 
         </form>

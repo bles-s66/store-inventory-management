@@ -1,10 +1,6 @@
 'use strict';
 
 
-/* ключ для localStorage */
-const STORAGE_KEY = 'electronics_warehouse_items_v1';
-
-
 /* заглушка картинки в виде svg */
 const PLACEHOLDER_IMAGE =
     'data:image/svg+xml;utf8,' +
@@ -18,89 +14,13 @@ const PLACEHOLDER_IMAGE =
     );
 
 
-/*  товары при первом запуске */
-const DEFAULT_ITEMS = [
-    {
-        id: 1,
-        name: 'Ноутбук HP Pavilion',
-        category: 'Электроника',
-        price: 45000,
-        quantity: 1,
-        description: 'Игровой ноутбук с процессором Intel Core i5',
-        image: 'assets/images/laptop.jpg'
-    },
-    {
-        id: 2,
-        name: 'Мышь Logitech MX Master',
-        category: 'Аксессуары',
-        price: 1200,
-        quantity: 11,
-        description: 'Беспроводная мышь для профессионалов',
-        image: 'assets/images/mouse.jpg'
-    },
-    {
-        id: 3,
-        name: 'Клавиатура механическая',
-        category: 'Аксессуары',
-        price: 2500,
-        quantity: 6,
-        description: 'Механическая клавиатура с RGB подсветкой',
-        image: 'assets/images/keyboard.jpg'
-    },
-    {
-        id: 4,
-        name: 'Монитор 24" Samsung',
-        category: 'Электроника',
-        price: 15000,
-        quantity: 2,
-        description: 'Монитор с IPS матрицей',
-        image: 'assets/images/monitor.jpg'
-    },
-    {
-        id: 5,
-        name: 'Веб-камера Logitech',
-        category: 'Аксессуары',
-        price: 800,
-        quantity: 10,
-        description: 'Веб-камера Full HD для видеоконференций',
-        image: 'assets/images/webcam.jpg'
-    },
-    {
-        id: 6,
-        name: 'Наушники Sony WH-1000XM4',
-        category: 'Аксессуары',
-        price: 12000,
-        quantity: 0,
-        description: 'Беспроводные наушники с шумоподавлением',
-        image: 'assets/images/headphones.jpg'
-    },
-    {
-        id: 7,
-        name: 'Жесткий диск 1TB',
-        category: 'Комплектующие',
-        price: 3500,
-        quantity: 2,
-        description: 'Внутренний жесткий диск для ПК',
-        image: 'assets/images/hdd.jpg'
-    },
-    {
-        id: 8,
-        name: 'Оперативная память 16GB',
-        category: 'Комплектующие',
-        price: 2800,
-        quantity: 10,
-        description: 'Модуль оперативной памяти DDR4',
-        image: 'assets/images/ram.jpg'
-    }
-];
-
-
 /* состояние приложения */
 const state = {
     items: [],
     searchQuery: '',
     selectedCategory: 'all',
-    sortBy: 'name-asc'
+    sortBy: 'name-asc',
+    editingId: null /* ID товара, который сейчас редактируется */
 };
 
 
@@ -117,45 +37,10 @@ const elements = {
     openModalBtn:      document.getElementById('open-modal-btn'),
 
     modal:             document.getElementById('modal'),
+    modalTitle:        document.getElementById('modal-title'),
+    modalSubmitBtn:    document.getElementById('modal-submit-btn'),
     productForm:       document.getElementById('product-form')
 };
-
-
-/* загрузка товаров из localStorage */
-function loadItemsFromStorage() {
-    const raw = localStorage.getItem(STORAGE_KEY);
-
-    if (!raw) {
-        return null;
-    }
-
-    try {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-            return parsed;
-        }
-        return null;
-    } catch (err) {
-        console.error('Ошибка чтения localStorage:', err);
-        return null;
-    }
-}
-
-
-/* сохранение товаров в localStorage */
-function saveItemsToStorage() {
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
-    } catch (err) {
-        console.error('Ошибка записи в localStorage:', err);
-    }
-}
-
-
-/* генерация id */
-function generateId() {
-    return Date.now();
-}
 
 
 /* форматирование цены */
@@ -227,7 +112,7 @@ function createProductCard(item) {
     imageWrapper.className = 'product-image';
 
     const img = document.createElement('img');
-    img.src = getImageSrc(item.image);
+    img.src = getImageSrc(item.image_url);
     img.alt = item.name;
     img.loading = 'lazy';
 
@@ -272,18 +157,37 @@ function createProductCard(item) {
     info.appendChild(price);
     info.appendChild(stock);
 
-    /* кнопка удаления */
+    /* кнопки удаления и изменения */
+    const actions = document.createElement('div');
+    actions.style.display = 'flex';
+    actions.style.gap = '8px';
+    actions.style.marginTop = '14px';
+
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'card-delete';
+    editBtn.dataset.action = 'edit';
+    editBtn.textContent = 'Изменить';
+    editBtn.style.marginTop = '0';
+    editBtn.style.background = '#e0f2fe';
+    editBtn.style.color = '#0369a1';
+    editBtn.style.borderColor = '#bae6fd';
+
     const deleteBtn = document.createElement('button');
     deleteBtn.type = 'button';
     deleteBtn.className = 'card-delete';
     deleteBtn.dataset.action = 'delete';
     deleteBtn.textContent = 'Удалить';
+    deleteBtn.style.marginTop = '0';
+
+    actions.appendChild(editBtn);
+    actions.appendChild(deleteBtn);
 
     content.appendChild(category);
     content.appendChild(title);
     content.appendChild(description);
     content.appendChild(info);
-    content.appendChild(deleteBtn);
+    content.appendChild(actions);
 
     card.appendChild(imageWrapper);
     card.appendChild(content);
@@ -317,56 +221,135 @@ function render() {
 }
 
 
-/* добавление товара */
-function addItem(data) {
-    const newItem = {
-        id: generateId(),
-        name: data.name,
-        category: data.category,
-        price: Number(data.price),
-        quantity: Number(data.quantity),
-        description: data.description,
-        image: data.image
-    };
+/* РАБОТА С СЕРВЕРОМ (REST API) */
 
-    state.items.unshift(newItem);
+/* загрузка всех товаров с сервера */
+async function loadProducts() {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/products/');
+        if (!response.ok) throw new Error('Ошибка загрузки: ' + response.status);
 
-    saveItemsToStorage();
-    render();
+        state.items = await response.json();
+        render();
+    } catch (error) {
+        console.error(error);
+        alert('Не удалось загрузить данные. Убедитесь, что backend запущен.');
+    }
 }
 
 
-/* удаление товара по id */
-function deleteItemById(id) {
-    state.items = state.items.filter(function (item) {
-        return item.id !== id;
-    });
+/* добавление товара */
+async function addItem(data) {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/products/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: data.name,
+                category: data.category,
+                price: Number(data.price),
+                quantity: Number(data.quantity),
+                description: data.description,
+                image_url: data.image
+            })
+        });
 
-    saveItemsToStorage();
-    render();
+        if (!response.ok) throw new Error('Ошибка создания: ' + response.status);
+
+        await loadProducts();
+        closeModal();
+    } catch (error) {
+        console.error(error);
+        alert('Не удалось добавить товар');
+    }
+}
+
+
+/* обновление товара */
+async function updateItem(id, data) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/products/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: data.name,
+                category: data.category,
+                price: Number(data.price),
+                quantity: Number(data.quantity),
+                description: data.description,
+                image_url: data.image
+            })
+        });
+
+        if (!response.ok) throw new Error('Ошибка обновления: ' + response.status);
+
+        await loadProducts();
+        closeModal();
+    } catch (error) {
+        console.error(error);
+        alert('Не удалось обновить товар');
+    }
+}
+
+
+/* удаление товара */
+async function deleteItemById(id) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/products/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.status !== 204) throw new Error('Ошибка удаления: ' + response.status);
+
+        await loadProducts();
+    } catch (error) {
+        console.error(error);
+        alert('Не удалось удалить товар');
+    }
 }
 
 
 /* открытие модального окна */
-function openModal() {
+function openModal(mode = 'create', item = null) {
     elements.modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+
+    if (mode === 'edit' && item) {
+        /* Режим редактирования */
+        state.editingId = item.id;
+        elements.modalTitle.textContent = 'Редактировать товар';
+        elements.modalSubmitBtn.textContent = 'Сохранить';
+
+        /* Заполняем форму текущими данными */
+        elements.productForm.elements['name'].value = item.name;
+        elements.productForm.elements['category'].value = item.category;
+        elements.productForm.elements['price'].value = item.price;
+        elements.productForm.elements['quantity'].value = item.quantity;
+        elements.productForm.elements['description'].value = item.description || '';
+        elements.productForm.elements['image'].value = item.image_url || '';
+    } else {
+        /* Режим создания */
+        state.editingId = null;
+        elements.modalTitle.textContent = 'Добавить товар';
+        elements.modalSubmitBtn.textContent = 'Добавить';
+        elements.productForm.reset();
+    }
+
+    clearAllErrors();
 
     const firstInput = elements.productForm.querySelector('input');
     if (firstInput) {
         firstInput.focus();
     }
-
-    document.body.style.overflow = 'hidden';
 }
 
 
 /* закрытие модального окна */
 function closeModal() {
     elements.modal.hidden = true;
-
     elements.productForm.reset();
     clearAllErrors();
-
+    state.editingId = null;
     document.body.style.overflow = '';
 }
 
@@ -445,6 +428,8 @@ function validateField(field) {
 }
 
 
+/* ОБРАБОТЧИКИ СОБЫТИЙ */
+
 /* поиск */
 elements.searchInput.addEventListener('input', function (event) {
     state.searchQuery = event.target.value;
@@ -466,31 +451,34 @@ elements.sortSelect.addEventListener('change', function (event) {
 });
 
 
-/* удаление через делегирование */
+/* делегирование кликов по карточкам: удаление и изменение */
 elements.productsContainer.addEventListener('click', function (event) {
     const deleteBtn = event.target.closest('[data-action="delete"]');
+    const editBtn = event.target.closest('[data-action="edit"]');
 
-    if (!deleteBtn) {
-        return;
-    }
+    if (deleteBtn) {
+        const card = deleteBtn.closest('.product-card');
+        if (!card) return;
+        const id = Number(card.dataset.id);
 
-    const card = deleteBtn.closest('.product-card');
-    if (!card) {
-        return;
-    }
-
-    const id = Number(card.dataset.id);
-
-    const confirmed = window.confirm('Удалить этот товар?');
-    if (confirmed) {
-        deleteItemById(id);
+        if (window.confirm('Удалить этот товар?')) {
+            deleteItemById(id);
+        }
+    } else if (editBtn) {
+        const card = editBtn.closest('.product-card');
+        if (!card) return;
+        const id = Number(card.dataset.id);
+        const item = state.items.find(function (p) { return p.id === id; });
+        if (item) {
+            openModal('edit', item);
+        }
     }
 });
 
 
-/* открытие модалки */
+/* открытие модалки (кнопка "Добавить товар") */
 elements.openModalBtn.addEventListener('click', function () {
-    openModal();
+    openModal('create');
 });
 
 
@@ -515,7 +503,6 @@ elements.productForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
     const fields = elements.productForm.querySelectorAll('input, select, textarea');
-
     let firstInvalid = null;
 
     fields.forEach(function (field) {
@@ -535,7 +522,7 @@ elements.productForm.addEventListener('submit', function (event) {
 
     const formData = new FormData(elements.productForm);
 
-    const newItem = {
+    const formValues = {
         name: (formData.get('name') || '').toString().trim(),
         category: (formData.get('category') || '').toString(),
         price: Number(formData.get('price')),
@@ -544,8 +531,12 @@ elements.productForm.addEventListener('submit', function (event) {
         image: (formData.get('image') || '').toString().trim()
     };
 
-    addItem(newItem);
-    closeModal();
+    /* Проверяем режим: редактирование или создание */
+    if (state.editingId !== null) {
+        updateItem(state.editingId, formValues);
+    } else {
+        addItem(formValues);
+    }
 });
 
 
@@ -558,18 +549,6 @@ elements.productForm.addEventListener('input', function (event) {
 });
 
 
-/* инициализация приложения */
-function init() {
-    const storedItems = loadItemsFromStorage();
+/* ИНИЦИАЛИЗАЦИЯ */
 
-    if (storedItems) {
-        state.items = storedItems;
-    } else {
-        state.items = DEFAULT_ITEMS.slice();
-        saveItemsToStorage();
-    }
-
-    render();
-}
-
-init();
+loadProducts();
